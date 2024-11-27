@@ -46,4 +46,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    /**
+     * Get the posts that the user has liked.
+     *
+     * This function defines a MANY-TO-MANY relationship between the User and Post models
+     * through the 'user_likes' pivot table. It retrieves only the posts where the pivot
+     * table's 'reaction' column has the value 'like'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'user_likes', 'user_id', 'post_id')
+            ->wherePivot('reaction', 'like');
+    }
 }

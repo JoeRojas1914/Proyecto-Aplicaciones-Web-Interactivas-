@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'user_id',
+        'user_id', // Usuario que ha escrito la reseña
         'movie_id',
         'content', 
         'likes', 
@@ -36,5 +36,22 @@ class Post extends Model
     public function setRatingAttribute($value)
     {
         $this->attributes['rating'] = max(0, min(5, $value));
+    }
+
+    /**
+     * Get all the users who have liked the post.
+     *
+     * This function defines a MANY-TO-MANY relationship between the Post model and the User model.
+     * It retrieves all users who have liked the post by filtering the pivot table 'user_likes' 
+     * where the 'reaction' column is 'like'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'user_likes', 'post_id', 'user_id')
+            ->wherePivot('reaction', 'like');
+            // ->withTimestamps();
     }
 }
