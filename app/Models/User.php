@@ -62,4 +62,31 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'user_likes', 'user_id', 'post_id')
             ->wherePivot('reaction', 'like');
     }
+
+    
+    /**
+     * Get the users that the user is following.
+     *
+     * This function defines a MANY-TO-MANY relationship between the User model
+     * and itself through the 'followers' pivot table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id');
+    }
+
+    /**
+     * Get the followers of the user.
+     *
+     * This function defines a MANY-TO-MANY relationship between the User model
+     * and itself through the 'followers' pivot table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id');
+    }
 }
