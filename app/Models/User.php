@@ -90,9 +90,34 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id');
     }
 
+    /**
+     * Get the list of movies that the user has in their watch list.
+     *
+     * This function establishes a many-to-many relationship between the User model
+     * and the WatchList model. It returns the IDs of the movies that the user has
+     * added to their watch list.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function watch_list()
     {
         // Se usa para retornar los IDs de las películas que el usuario tiene en su lista de seguimiento
         return $this->belongsToMany(WatchList::class, 'watch_list', 'user_id', 'movie_id');
+    }
+
+
+    /**
+     * Define a many-to-many relationship between User and UserGenre.
+     *
+     * This function establishes a relationship where a user can belong to multiple genres
+     * and a genre can belong to multiple users. It uses the 'users_genres' pivot table
+     * with 'user_id' as the foreign key for the User model and 'genre_id' as the foreign key
+     * for the UserGenre model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function genres()
+    {
+        return $this->belongsToMany(UserGenre::class, 'users_genres', 'user_id', 'genre_id');
     }
 }
