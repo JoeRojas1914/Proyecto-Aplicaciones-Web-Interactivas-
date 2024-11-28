@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'movie_api' => [
+        'key' => env('MOVIE_API_KEY'),
+        'token' => env('MOVIE_API_TOKEN'),
+        'endpoint' => env('MOVIE_API_ENDPOINT'),
+    ],
 
 ];
