@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('watch_list', function (Blueprint $table) {
+        Schema::create('users_genres', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->string('genre_id'); // ID del género de películas de la API
             $table->timestamps();
