@@ -89,4 +89,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id');
     }
+
+    public function watch_list()
+    {
+        // Se usa para retornar los IDs de las películas que el usuario tiene en su lista de seguimiento
+        return $this->belongsToMany(WatchList::class, 'watch_list', 'user_id', 'movie_id');
+    }
 }
