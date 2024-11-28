@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // // User::factory(10)->create();
+        // Crear 3 usuarios de prueba
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -32,6 +32,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'testadmin@example.com',
             'password' => bcrypt('contrasena'),
             'rol' => 'administrador',
+        ]);
+
+        // Crear 50 posts de prueba
+        $this->call([
+            PostSeeder::class,
         ]);
     }
 }
