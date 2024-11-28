@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -30,7 +31,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Ignoramos likes y dislikes, ya que se inicializan a 0 por defecto        
+        $validated_data = $request->validate([
+            'movie_id' => 'required|integer|min:0',
+            'content' => 'required|string',
+            'rating' => 'integer|between:0,5',
+        ]);
+
+        // Agregar el ID del usuario autenticado a los datos validados
+        $validated_data['user_id'] = Auth::id();
+        $post = Post::create($validated_data);
+        // * return redirect()->back()->with('success', 'Reseña creada correctamente');
     }
 
     /**
@@ -38,7 +49,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        // * return view('posts.show', compact('post'));
     }
 
     /**
@@ -54,7 +66,15 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $validated_data = $request->validate([
+            'movie_id' => 'required|integer|min:0',
+            'content' => 'required|string',
+            'rating' => 'integer|between:0,5',
+        ]);
+
+        $post->update($validated_data);
+        // * return redirect()->back()->with('success', 'Reseña actualizada correctamente');
     }
 
     /**
@@ -62,6 +82,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        // * return redirect()->back()->with('success', 'Reseña eliminada correctamente');
     }
 }
