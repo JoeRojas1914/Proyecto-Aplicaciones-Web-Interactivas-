@@ -98,4 +98,79 @@ class MovieApiService
 
         throw new \Exception('No se pudo obtener las películas mejor valoradas.');
     }
+
+    /**
+     * Retrieves the list of upcoming movies from the API.
+     *
+     * This method initializes the API connection, checks the cache for existing data,
+     * and if not found, makes an HTTP request to the API to fetch the upcoming movies.
+     * The result is then cached for a day.
+     *
+     * @return array The list of upcoming movies.
+     * @throws \Exception If the API request fails.
+     */
+    public static function getUpcomingMovies()
+    {
+        self::initialize();
+        $cacheKey = 'upcomingMovies';
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $url = self::$apiEndpoint . 'upcoming';
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . self::$apiToken,
+            'accept' => 'application/json',
+        ])->get($url, [
+            'page' => 1,
+        ]);
+
+        if ($response->successful()) {
+            $movies = $response->json();
+            Cache::put($cacheKey, $movies, now()->addDay());
+            return $movies;
+        }
+
+        throw new \Exception('No se pudo obtener las películas próximas.');
+    }	
+
+    
+    /**
+     * Retrieves the list of movies currently playing in theaters.
+     *
+     * This method initializes the API service, checks if the list of now playing movies
+     * is cached, and if not, fetches it from the external API. The result is then cached
+     * for a day.
+     *
+     * @return array The list of now playing movies.
+     * @throws \Exception If the movies cannot be retrieved from the API.
+     */
+    public static function getNowPlayingMovies()
+    {
+        self::initialize();
+        $cacheKey = 'nowPlayingMovies';
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $url = self::$apiEndpoint . 'now_playing';
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . self::$apiToken,
+            'accept' => 'application/json',
+        ])->get($url, [
+            'page' => 1,
+        ]);
+
+        if ($response->successful()) {
+            $movies = $response->json();
+            Cache::put($cacheKey, $movies, now()->addDay());
+            return $movies;
+        }
+
+        throw new \Exception('No se pudo obtener las películas en cartelera.');
+    }
 }

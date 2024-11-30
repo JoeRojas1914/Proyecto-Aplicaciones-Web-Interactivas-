@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
+use App\Services\MovieApiService;
 
 class MoviesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * Returns top rated movies and movies by genre
+     * Returns top rated movies, movies currently on theatres and upcoming movies.
      */
     public function index()
     {
-        // $topRatedMovies = $this->getTopRatedMovies();
-        // TODO add view
-        // return view('movies.index');
+        $topRatedMovies = MovieApiService::getTopRatedMovies();
+        $upcomingMovies = MovieApiService::getUpcomingMovies();
+        $nowPlayingMovies = MovieApiService::getNowPlayingMovies();
+
+        return view('movies.index', compact('topRatedMovies', 'upcomingMovies', 'nowPlayingMovies'));
     }	
 }
