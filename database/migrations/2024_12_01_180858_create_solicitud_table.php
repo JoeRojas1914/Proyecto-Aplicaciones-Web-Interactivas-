@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->binary('file')->nullable();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); 
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
