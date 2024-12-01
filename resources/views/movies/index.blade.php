@@ -32,7 +32,7 @@
                                 <img src="https://image.tmdb.org/t/p/w1280/{{ $topRatedMovie['backdrop_path'] }}" alt="poster" class="d-block w-100" style="z-index: 1;">
                                 <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 70%;"></div>
                                 <div class="carousel-caption d-md-block text-start">
-                                    <h5>{{ $topRatedMovie['original_title'] }}</h5>
+                                    <h5>{{ $topRatedMovie['title'] }}</h5>
                                     <p style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                                         {{ $topRatedMovie['overview'] }}
                                     </p>
@@ -61,7 +61,7 @@
                                     <img src="https://image.tmdb.org/t/p/w300/{{ $nowPlayingMovie['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
                                         <div>
-                                            <h5 class="card-title">{{$nowPlayingMovie['original_title']}}</h5>
+                                            <h5 class="card-title">{{$nowPlayingMovie['title']}}</h5>
                                             <p class="card-text">{{$nowPlayingMovie['vote_average']}}</p>
                                         </div>
                                         <a href="#" class="btn btn-primary">Go somewhere</a>
@@ -90,7 +90,7 @@
                                     <img src="https://image.tmdb.org/t/p/w300/{{ $upcoming['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
                                         <div>
-                                            <h5 class="card-title">{{$upcoming['original_title']}}</h5>
+                                            <h5 class="card-title">{{$upcoming['title']}}</h5>
                                             <p class="card-text">{{$upcoming['vote_average']}}</p>
                                         </div>
                                         <a href="#" class="btn btn-primary">Go somewhere</a>
