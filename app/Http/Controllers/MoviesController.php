@@ -18,7 +18,13 @@ class MoviesController extends Controller
         $topRatedMovies = MovieApiService::getTopRatedMovies();
         $upcomingMovies = MovieApiService::getUpcomingMovies();
         $nowPlayingMovies = MovieApiService::getNowPlayingMovies();
-        // dd($upcomingMovies);
+        // dd($topRatedMovies);
         return view('movies.index', compact('topRatedMovies', 'upcomingMovies', 'nowPlayingMovies'));
     }	
+
+    public function show($id_movie)
+    {
+        $movie = MovieApiService::getMovieData($id_movie);
+        return view('movies.show', compact('movie'));
+    }
 }
