@@ -51,7 +51,9 @@ class MovieApiService
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . self::$apiToken,
             'accept' => 'application/json',
-        ])->get($url,);
+        ])->get($url,[
+            'language'=>'es',
+        ]);
 
         if ($response->successful()) {
             $movie = $response->json();
