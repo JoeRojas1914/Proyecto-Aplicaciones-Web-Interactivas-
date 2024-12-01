@@ -81,14 +81,15 @@ class MovieApiService
             return Cache::get($cacheKey);
         }
 
-        $url = self::$apiEndpoint . 'top_rated';
+        $url = self::$apiEndpoint . 'movie/top_rated';
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . self::$apiToken,
             'accept' => 'application/json',
         ])->get($url, [
+            'language'=>'es',
             'page' => 1,
-        ]);
+        ]); 
 
         if ($response->successful()) {
             $movies = $response->json();
@@ -118,12 +119,13 @@ class MovieApiService
             return Cache::get($cacheKey);
         }
 
-        $url = self::$apiEndpoint . 'upcoming';
-
+        $url = self::$apiEndpoint . 'movie/upcoming';
+        
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . self::$apiToken,
             'accept' => 'application/json',
         ])->get($url, [
+            'language'=>'es',
             'page' => 1,
         ]);
 
@@ -156,12 +158,13 @@ class MovieApiService
             return Cache::get($cacheKey);
         }
 
-        $url = self::$apiEndpoint . 'now_playing';
+        $url = self::$apiEndpoint . 'movie/now_playing';
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . self::$apiToken,
             'accept' => 'application/json',
         ])->get($url, [
+            'language'=>'es',
             'page' => 1,
         ]);
 
