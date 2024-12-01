@@ -35,6 +35,43 @@
                         </button>
                     </div>
                 </div>
+
+                <div class="row m-2">
+                    <h3>En cartelera</h3>
+                    <div class="d-flex overflow-auto">
+                        @foreach ($nowPlayingMovies['results'] as $nowPlayingMovie)
+                        <div class="card me-3 my-2" style="min-width: 15rem">
+                            <img src="https://image.tmdb.org/t/p/w300/{{ $nowPlayingMovie['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title m-0">{{$nowPlayingMovie['original_title']}}</h5>
+                                    <p class="card-text m-0 mb-4">{{$nowPlayingMovie['vote_average']}}</p>
+                                </div>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>                                
+                            </div>
+                        </div>  
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <h3>Próximamente</h3>
+                    <div class="d-flex overflow-auto">
+                        @foreach ($upcomingMovies['results'] as $upcoming)
+                        <div class="card me-3 my-2" style="min-width: 15rem">
+                            <img src="https://image.tmdb.org/t/p/w300/{{ $upcoming['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title">{{$upcoming['original_title']}}</h5>
+                                    <p class="card-text">{{$upcoming['vote_average']}}</p>
+                                </div>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>  
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
