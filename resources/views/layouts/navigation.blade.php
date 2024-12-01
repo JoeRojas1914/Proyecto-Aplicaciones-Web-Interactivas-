@@ -21,7 +21,7 @@
                         {{ __('Administracion') }}
                     </x-nav-link>
                     @endif  
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('movies.index')" :active="request()->routeIs('dashboard')">
                         {{ __('Peliculas') }}
                     </x-nav-link>
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('dashboard')">

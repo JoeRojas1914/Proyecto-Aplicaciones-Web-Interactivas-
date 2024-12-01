@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     // Route::get('/movie/{id}', [PostController::class, 'getMovieDataFromApi'])->name('posts.data');
+
+    Route::get('/movies', [MoviesController::class, 'index'])->name('movies.index');
 });
 
 require __DIR__.'/auth.php';
