@@ -9,10 +9,8 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('solicitud.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
-        @method('patch')
-
         <div>
             <x-input-label for="archivo" :value="__('Archivo de verificación')" />
             <input 
@@ -24,10 +22,10 @@
             />
             <x-input-error class="mt-2" :messages="$errors->get('archivo')" />
         </div>
-
+    
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
-
+    
             @if (session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"
@@ -39,4 +37,5 @@
             @endif
         </div>
     </form>
+    
 </section>
