@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\MovieApiService;
+use App\Models\Post;
 
 class MoviesController extends Controller
 {
@@ -25,6 +26,7 @@ class MoviesController extends Controller
     public function show($id_movie)
     {
         $movie = MovieApiService::getMovieData($id_movie);
-        return view('movies.show', compact('movie'));
+        $posts = Post::where('movie_id', $id_movie)->get();
+        return view('movies.show', compact('movie', 'posts'));
     }
 }
