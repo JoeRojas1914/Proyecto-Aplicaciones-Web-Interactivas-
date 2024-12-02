@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class SolicitudController extends Controller
 {
+
+    public function index()
+    {
+        $solicitudes = Solicitud::where('status', 'pending')->with('usuario')->get();
+        return view('admin.solicitudes', compact('solicitudes'));
+    }   
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -24,5 +32,23 @@ class SolicitudController extends Controller
         ]);
 
         return redirect()->back()->with('status', 'profile-updated');
+    }
+
+
+    public function update(Request $request, Solicitud $solicitud)
+    {
+        $accion = $request->input('accion');
+
+        if ($accion === 'aceptar') {
+            $solicitud->status = 'accepted';
+            $solicitud->usuario->rol = 'critico';
+            $solicitud->usuario->save();
+        } elseif ($accion === 'rechazar') {
+            $solicitud->status = 'rejected';
+        }
+
+        $solicitud->save();
+
+        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
     }
 }
