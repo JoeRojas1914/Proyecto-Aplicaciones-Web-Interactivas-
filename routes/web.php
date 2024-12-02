@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/movies', [MoviesController::class, 'index'])->name('movies.index');
     Route::get('/movies/{id_movie}', [MoviesController::class, 'show'])->name('movies.show');
+    // Route::post('/movies/{id_movie}', [MoviesController::class, 'addToWatchList'])->name('movies.addToWatchList');
+    // watchlist.toggle
+    Route::post('/watchlist/{id_movie}', [MoviesController::class, 'toggleWatchList'])->name('watchlist.toggle');
 
     Route::get('/admin/solicitudes', [SolicitudController::class, 'index'])->name('admin.index');
     Route::patch('/admin/solicitudes/{solicitud}', [SolicitudController::class, 'update'])->name('admin.update');
