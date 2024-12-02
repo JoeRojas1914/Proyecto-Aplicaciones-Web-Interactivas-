@@ -60,11 +60,11 @@
                                 <div class="card me-3 my-2" style="min-width: 15rem">
                                     <img src="https://image.tmdb.org/t/p/w1280/{{ $nowPlayingMovie['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
-                                        <div>
+                                        <div class="mb-2">
                                             <h5 class="card-title">{{$nowPlayingMovie['title']}}</h5>
-                                            <p class="card-text">{{$nowPlayingMovie['vote_average']}}</p>
+                                            {{-- <p class="card-text">{{ round($nowPlayingMovie['vote_average']) }}</p> --}}
                                         </div>
-                                        <a href="{{ route('movies.show', ['id_movie' => $nowPlayingMovie['id']]) }}" class="btn btn-primary">Go somewhere</a>
+                                        <a href="{{ route('movies.show', ['id_movie' => $nowPlayingMovie['id']]) }}" class="btn btn-secondary">Reseñas</a>
                                     </div>
                                 </div>
                             </div>
@@ -89,11 +89,11 @@
                                 <div class="card me-3 my-2" style="min-width: 15rem">
                                     <img src="https://image.tmdb.org/t/p/w1280/{{ $upcoming['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
-                                        <div>
+                                        <div class="mb-2">
                                             <h5 class="card-title">{{$upcoming['title']}}</h5>
-                                            <p class="card-text">{{$upcoming['vote_average']}}</p>
+                                            {{-- <p class="card-text">{{round($upcoming['vote_average'])}}</p> --}}
                                         </div>
-                                        <a href="{{ route('movies.show', ['id_movie' => $upcoming['id']]) }}" class="btn btn-primary">Go somewhere</a>
+                                        <a href="{{ route('movies.show', ['id_movie' => $upcoming['id']]) }}" class="btn btn-secondary">Reseñas</a>
                                     </div>
                                 </div>
                             </div>
