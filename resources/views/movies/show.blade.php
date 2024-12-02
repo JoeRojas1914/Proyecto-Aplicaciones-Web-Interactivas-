@@ -67,7 +67,13 @@
 
                     <p class="mt-2">{{ $movie['runtime'] }} min</p>
                     <p class="mb-0 text-secondary fw-bold">Sinopsis</p>
-                    <p class="mt-0">{{ $movie['overview'] }}</p>
+                    <p class="mt-0 mb-4">{{ $movie['overview'] }}</p>
+                    <form action="{{ route('watchlist.toggle', $movie['id']) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn {{ $isInWatchList ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                            <i class="fas fa-bookmark"></i> {{ $isInWatchList ? 'Quitar de mi lista' : 'Ver más tarde' }}
+                        </button>
+                    </form>
                 </div>
 
                 {{-- TODO Jalar de base de datos todas las reseñas con el ID de esta película --}}
@@ -161,6 +167,60 @@
         </div>
     </div>
     @push('scripts')
-
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const likeButtons = document.querySelectorAll('.like-btn');
+            const dislikeButtons = document.querySelectorAll('.dislike-btn');
+        
+            likeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const postId = button.closest('.card').dataset.postId;
+        
+                    fetch('/like', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ post_id: postId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'liked') {
+                            button.classList.add('active');
+                            button.parentElement.querySelector('.dislike-btn').classList.remove('active');
+                        } else if (data.status === 'removed') {
+                            button.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        
+            dislikeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const postId = button.closest('.card').dataset.postId;
+        
+                    fetch('/dislike', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ post_id: postId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'disliked') {
+                            button.classList.add('active');
+                            button.parentElement.querySelector('.like-btn').classList.remove('active');
+                        } else if (data.status === 'removed') {
+                            button.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+        
+    </script>
     @endpush
 </x-app-layout>
