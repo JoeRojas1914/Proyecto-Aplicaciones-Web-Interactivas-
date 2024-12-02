@@ -11,8 +11,8 @@ class SolicitudController extends Controller
 
     public function index()
     {
-        $solicitudes = Solicitud::where('status', 'pending')->with('usuario')->get();
-        return view('admin.solicitudes', compact('solicitudes'));
+        $solicitudes = Solicitud::where('status', 'pending')->with('user')->get();
+        return view('admin.index', compact('solicitudes'));
     }   
 
 
@@ -41,8 +41,8 @@ class SolicitudController extends Controller
 
         if ($accion === 'aceptar') {
             $solicitud->status = 'accepted';
-            $solicitud->usuario->rol = 'critico';
-            $solicitud->usuario->save();
+            $solicitud->user->rol = 'critico';
+            $solicitud->user->save();
         } elseif ($accion === 'rechazar') {
             $solicitud->status = 'rejected';
         }
