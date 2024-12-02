@@ -17,17 +17,6 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')->paginate(10);
-
-        // Obtener los datos de la película para cada post
-        foreach ($posts as $post) {
-            try {
-                $movieData = $this->getMovieDataFromApi($post->movie_id);
-                $post->movie_title = $movieData['original_title'];
-            } catch (\Exception $e) {
-                // Manejar la excepción (por ejemplo, establecer un título predeterminado)
-                $post->movie_title = 'Título no disponible';
-            }
-        }
         return view('posts.index', compact('posts'));
     }
 

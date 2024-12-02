@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('movie_id'); // Película a la que pertenece la reseña
-            // $table->text('movie_title'); // Título de la reseña
+            $table->text('title'); // Título de la pelicula
             $table->text('content'); // Contenido de las reseñas
             $table->integer('likes')->default(0); // Número de likes
             $table->integer('dislikes')->default(0); // Número de dislikes

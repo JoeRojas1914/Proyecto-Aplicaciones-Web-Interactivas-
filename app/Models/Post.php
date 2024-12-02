@@ -12,6 +12,7 @@ class Post extends Model
     protected $fillable = [
         'user_id', // Usuario que ha escrito la reseña
         'movie_id',
+        'title',
         'content', 
         'likes', 
         'dislikes', 
