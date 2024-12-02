@@ -29,7 +29,12 @@
                                                 @endif
                                             @endfor
                                         </div>
-                                        <p class="card-text text-muted mb-0">{{ $post->user->name }} </p>
+                                        <p class="card-text text-muted mb-0 d-flex align-items-center">
+                                            {{ $post->user->name }}
+                                            <button class="btn btn-sm btn-outline-primary ms-2 follow-btn" data-user-id="{{ $post->user->id }}">
+                                                Seguir
+                                            </button>
+                                        </p>
                                         <p class="card-text text-muted mt-0">{{ $post->created_at->diffForHumans() }}</p>
                                         <p class="card-text">{{ $post->content }}</p>
                                     </div>
@@ -46,8 +51,8 @@
                         @endforeach
                     </div>
 
-                     <!-- Enlaces de paginación -->
-                     <div class="d-flex justify-content-center mt-4">
+                    <!-- Enlaces de paginación -->
+                    <div class="d-flex justify-content-center mt-4">
                         {{ $posts->links() }}
                     </div>
                 </div>
@@ -59,6 +64,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const likeButtons = document.querySelectorAll('.like-btn');
     const dislikeButtons = document.querySelectorAll('.dislike-btn');
+    const followButtons = document.querySelectorAll('.follow-btn');
 
     likeButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -107,15 +113,33 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    followButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const userId = button.getAttribute('data-user-id');
+
+            fetch('/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'followed') {
+                    button.textContent = 'Siguiendo';
+                    button.classList.add('btn-success');
+                    button.classList.remove('btn-outline-primary');
+                } else if (data.status === 'unfollowed') {
+                    button.textContent = 'Seguir';
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-primary');
+                }
+            });
+        });
+    });
 });
-
     </script>
-
-    <style>
-        .btn.active {
-            background-color: var(--bs-primary);
-            color: white;
-            border-color: var(--bs-primary);
-        }
-    </style>
 </x-app-layout>
