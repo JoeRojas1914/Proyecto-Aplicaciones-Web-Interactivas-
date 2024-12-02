@@ -14,9 +14,9 @@
                         @foreach ($posts as $post)
                             <div class=" mb-4">
                                 <div class="card h-100 shadow-lg">
-                                    {{-- <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}"> --}}
+                                    <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}">
                                     <div class="card-body">
-                                        <h2 class="card-title font-bold text-xl mb-1">{{ $post->title}}</h2>
+                                        <h2 class="card-title font-bold text-xl mb-1">{{ $post->movie_title }}</h2>
                                         <div class="d-flex align-items-center mb-4">
                                             @for ($i = 0; $i < 5; $i++)
                                                 @if ($i < $post->rating)
@@ -33,7 +33,14 @@
                                         <p class="card-text text-muted mb-0">{{ $post->user->name }} </p>
                                         <p class="card-text text-muted mt-0">{{ $post->created_at->diffForHumans() }}</p>
                                         <p class="card-text">{{ $post->content }}</p>
-                                        <button href="" class="btn btn-primary mt-2">Leer más</button>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-end">
+                                        <button class="btn btn-outline-success like-btn me-2">
+                                            <i class="fas fa-thumbs-up"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger dislike-btn">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -48,4 +55,39 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const likeButtons = document.querySelectorAll('.like-btn');
+            const dislikeButtons = document.querySelectorAll('.dislike-btn');
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.toggle('active');
+                    const dislikeButton = button.parentElement.querySelector('.dislike-btn');
+                    if (dislikeButton.classList.contains('active')) {
+                        dislikeButton.classList.remove('active');
+                    }
+                });
+            });
+
+            dislikeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.toggle('active');
+                    const likeButton = button.parentElement.querySelector('.like-btn');
+                    if (likeButton.classList.contains('active')) {
+                        likeButton.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .btn.active {
+            background-color: var(--bs-primary);
+            color: white;
+            border-color: var(--bs-primary);
+        }
+    </style>
 </x-app-layout>
