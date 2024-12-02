@@ -13,7 +13,7 @@
                     <div class="row">
                         @foreach ($posts as $post)
                             <div class=" mb-4">
-                                <div class="card h-100 shadow-lg">
+                                <div class="card h-100 shadow-lg" data-post-id="{{ $post->id }}">
                                     <div class="card-body">
                                         <h2 class="card-title font-bold text-xl mb-1">{{ $post->movie_title }}</h2>
                                         <div class="d-flex align-items-center mb-4">
@@ -56,30 +56,59 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const likeButtons = document.querySelectorAll('.like-btn');
-            const dislikeButtons = document.querySelectorAll('.dislike-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    const dislikeButtons = document.querySelectorAll('.dislike-btn');
 
-            likeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    button.classList.toggle('active');
-                    const dislikeButton = button.parentElement.querySelector('.dislike-btn');
-                    if (dislikeButton.classList.contains('active')) {
-                        dislikeButton.classList.remove('active');
-                    }
-                });
-            });
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const postId = button.closest('.card').dataset.postId;
 
-            dislikeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    button.classList.toggle('active');
-                    const likeButton = button.parentElement.querySelector('.like-btn');
-                    if (likeButton.classList.contains('active')) {
-                        likeButton.classList.remove('active');
-                    }
-                });
+            fetch('/like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ post_id: postId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked') {
+                    button.classList.add('active');
+                    button.parentElement.querySelector('.dislike-btn').classList.remove('active');
+                } else if (data.status === 'removed') {
+                    button.classList.remove('active');
+                }
             });
         });
+    });
+
+    dislikeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const postId = button.closest('.card').dataset.postId;
+
+            fetch('/dislike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ post_id: postId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'disliked') {
+                    button.classList.add('active');
+                    button.parentElement.querySelector('.like-btn').classList.remove('active');
+                } else if (data.status === 'removed') {
+                    button.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+
     </script>
 
     <style>
