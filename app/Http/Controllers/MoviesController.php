@@ -26,7 +26,7 @@ class MoviesController extends Controller
     public function show($id_movie)
     {
         $movie = MovieApiService::getMovieData($id_movie);
-        $posts = Post::where('movie_id', $id_movie)->get();
+        $posts = Post::where('movie_id', $id_movie)->orderBy('created_at', 'desc')->get();
         // dd($movie);
         return view('movies.show', compact('movie', 'posts'));
     }
