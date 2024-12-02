@@ -26,7 +26,7 @@
                                 <tr>
                                     <td class="px-6 py-4">{{ $solicitud->user->name }}</td>
                                     <td class="px-6 py-4">
-                                        <a href="{{ asset('storage/' . $solicitud->archivo) }}" target="_blank" class="text-primary">Ver archivo</a>
+                                        <a href="{{ asset('storage/' . $solicitud->file) }}" target="_blank" class="text-primary">Ver archivo</a>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <form method="POST" action="{{ route('admin.update', $solicitud) }}" class="d-inline-block">
