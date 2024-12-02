@@ -27,6 +27,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/movies', [MoviesController::class, 'index'])->name('movies.index');
     Route::get('/movies/{id_movie}', [MoviesController::class, 'show'])->name('movies.show');
+
+    Route::get('/admin/solicitudes', [SolicitudController::class, 'index'])->name('admin.index');
+    Route::patch('/admin/solicitudes/{solicitud}', [SolicitudController::class, 'update'])->name('admin.update');
 });
 
 require __DIR__.'/auth.php';

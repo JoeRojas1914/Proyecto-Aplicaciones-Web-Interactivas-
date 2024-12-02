@@ -49,6 +49,6 @@ class SolicitudController extends Controller
 
         $solicitud->save();
 
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
+        return redirect()->route('admin.index')->with('success', 'Solicitud actualizada correctamente.');
     }
 }
