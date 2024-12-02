@@ -61,85 +61,67 @@
     </div>
 
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const likeButtons = document.querySelectorAll('.like-btn');
-    const dislikeButtons = document.querySelectorAll('.dislike-btn');
-    const followButtons = document.querySelectorAll('.follow-btn');
-
-    likeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const postId = button.closest('.card').dataset.postId;
-
-            fetch('/like', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'liked') {
-                    button.classList.add('active');
-                    button.parentElement.querySelector('.dislike-btn').classList.remove('active');
-                } else if (data.status === 'removed') {
-                    button.classList.remove('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            const likeButtons = document.querySelectorAll('.like-btn');
+            const dislikeButtons = document.querySelectorAll('.dislike-btn');
+            const followButtons = document.querySelectorAll('.follow-btn');
+        
+            // Manejo de botones "like" y "dislike"
+            likeButtons.forEach(button => {
+                button.addEventListener('click', () => handleReaction(button, 'like'));
+            });
+        
+            dislikeButtons.forEach(button => {
+                button.addEventListener('click', () => handleReaction(button, 'dislike'));
+            });
+        
+            function handleReaction(button, type) {
+                const card = button.closest('.card');
+                const likeButton = card.querySelector('.like-btn');
+                const dislikeButton = card.querySelector('.dislike-btn');
+        
+                if (type === 'like') {
+                    if (likeButton.classList.contains('active')) {
+                        // Desactivar "like"
+                        likeButton.classList.remove('active');
+                    } else {
+                        // Activar "like" y desactivar "dislike"
+                        likeButton.classList.add('active');
+                        dislikeButton.classList.remove('active');
+                    }
+                } else if (type === 'dislike') {
+                    if (dislikeButton.classList.contains('active')) {
+                        // Desactivar "dislike"
+                        dislikeButton.classList.remove('active');
+                    } else {
+                        // Activar "dislike" y desactivar "like"
+                        dislikeButton.classList.add('active');
+                        likeButton.classList.remove('active');
+                    }
                 }
+            }
+        
+            // Manejo de botón "Seguir"
+            followButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const userId = button.dataset.userId;
+        
+                    // Buscar todos los botones con el mismo userId
+                    const relatedButtons = document.querySelectorAll(`.follow-btn[data-user-id="${userId}"]`);
+        
+                    relatedButtons.forEach(relatedButton => {
+                        if (relatedButton.textContent.trim() === 'Seguir') {
+                            relatedButton.textContent = 'Siguiendo';
+                            relatedButton.classList.add('btn-success');
+                            relatedButton.classList.remove('btn-outline-primary');
+                        } else {
+                            relatedButton.textContent = 'Seguir';
+                            relatedButton.classList.remove('btn-success');
+                            relatedButton.classList.add('btn-outline-primary');
+                        }
+                    });
+                });
             });
         });
-    });
-
-    dislikeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const postId = button.closest('.card').dataset.postId;
-
-            fetch('/dislike', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'disliked') {
-                    button.classList.add('active');
-                    button.parentElement.querySelector('.like-btn').classList.remove('active');
-                } else if (data.status === 'removed') {
-                    button.classList.remove('active');
-                }
-            });
-        });
-    });
-
-    followButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const userId = button.getAttribute('data-user-id');
-
-            fetch('/follow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ user_id: userId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'followed') {
-                    button.textContent = 'Siguiendo';
-                    button.classList.add('btn-success');
-                    button.classList.remove('btn-outline-primary');
-                } else if (data.status === 'unfollowed') {
-                    button.textContent = 'Seguir';
-                    button.classList.remove('btn-success');
-                    button.classList.add('btn-outline-primary');
-                }
-            });
-        });
-    });
-});
-    </script>
+        </script>   
 </x-app-layout>
