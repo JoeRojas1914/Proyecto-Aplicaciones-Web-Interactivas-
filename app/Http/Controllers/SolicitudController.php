@@ -23,11 +23,11 @@ class SolicitudController extends Controller
         ]);
 
 
-        $fileContent = file_get_contents($request->file('archivo')->getRealPath());
+        $filePath = $request->file('archivo')->store('solicitudes', 'public');
 
         Solicitud::create([
             'user_id' => Auth::id(), 
-            'file' => $fileContent, 
+            'file' => $filePath, 
             'status' => 'pending',
         ]);
 
