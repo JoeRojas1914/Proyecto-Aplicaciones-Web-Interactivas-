@@ -33,17 +33,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // Ignoramos likes y dislikes, ya que se inicializan a 0 por defecto        
-        $validated_data = $request->validate([
+        try {
+            // Ignoramos likes y dislikes, ya que se inicializan a 0 por defecto        
+            $validated_data = $request->validate([
+            'title' => 'required|string',
             'movie_id' => 'required|integer|min:0',
             'content' => 'required|string',
             'rating' => 'integer|between:0,5',
-        ]);
+            ]);
 
-        // Agregar el ID del usuario autenticado a los datos validados
-        $validated_data['user_id'] = Auth::id();
-        $post = Post::create($validated_data);
-        // * return redirect()->back()->with('success', 'Reseña creada correctamente');
+            // Agregar el ID del usuario autenticado a los datos validados
+            $validated_data['user_id'] = Auth::id();
+            Post::create($validated_data);
+            return redirect()->back()->with('success', 'Reseña creada correctamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error','Hubo un problema al crear la reseña: ' . $e->getMessage());
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     // Route::get('/movie/{id}', [PostController::class, 'getMovieDataFromApi'])->name('posts.data');
 
     Route::get('/movies', [MoviesController::class, 'index'])->name('movies.index');

@@ -2,6 +2,8 @@
     @push('styles')
         <!-- jQuery -->
         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             .rating-percentage{
                 display: flex;
@@ -26,8 +28,13 @@
                     <img src="https://image.tmdb.org/t/p/w1280/{{ $movie['backdrop_path'] }}" alt="banner-pelicula" class="d-block w-100">
                 </div>
                 <div class="d-flex flex-column text-gray-900 p-4">
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
                     <div class="d-flex justify-content-between">
-
                         <div class="flex-column">
                             <h1 class="mt-2">{{ $movie['title'] }}</h1>
                             <div class="d-flex justify-content-start">
@@ -64,14 +71,16 @@
                 </div>
 
                 {{-- TODO Jalar de base de datos todas las reseñas con el ID de esta película --}}
-                <h3 class="mx-4">Reseñas</h3>
+                <div class="d-flex justify-content-between mx-4 mb-4">
+                    <h3>Reseñas</h3>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPostModal">Crear reseña <i class="fa-solid fa-plus"></i></button>
+                </div>
                 @if (count($posts) > 0)
                     @foreach ($posts as $post)
                     <div class=" mb-4 mx-4">
-                        <div class="card h-100 shadow-lg">
-                            {{-- <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}"> --}}
+                        <div class="card h-100 shadow-lg" data-post-id="{{ $post->id }}">
                             <div class="card-body">
-                                <h2 class="card-title font-bold text-xl mb-1">{{ $post->title}}</h2>
+                                <h2 class="card-title font-bold text-xl mb-1">{{ $post->movie_title }}</h2>
                                 <div class="d-flex align-items-center mb-4">
                                     @for ($i = 0; $i < 5; $i++)
                                         @if ($i < $post->rating)
@@ -88,7 +97,14 @@
                                 <p class="card-text text-muted mb-0">{{ $post->user->name }} </p>
                                 <p class="card-text text-muted mt-0">{{ $post->created_at->diffForHumans() }}</p>
                                 <p class="card-text">{{ $post->content }}</p>
-                                <button href="" class="btn btn-primary mt-2">Leer más</button>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end">
+                                <button class="btn btn-outline-success like-btn me-2">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </button>
+                                <button class="btn btn-outline-danger dislike-btn">
+                                    <i class="fas fa-thumbs-down"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -100,6 +116,50 @@
         </div>
     </div>
 
+
+    <div class="modal fade" tabindex="-1" id="newPostModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear reseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column">
+                    <h1 class="mt-2">{{ $movie['title'] }}</h1>
+                    <form action="{{ route('posts.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" value="{{ $movie['id'] }}" name="movie_id">
+                        <input type="hidden" value="{{ $movie['title'] }}" name="title">
+                        <div class="mb-3">
+                            <label for="ratingInput" class="form-label">Calificación</label>
+                            <select name="rating" id="ratingInput" class="form-select">
+                                @for ($i = 0; $i <= 5; $i++)
+                                    <option value="{{ $i }}">
+                                        @for ($j = 0; $j < $i; $j++)
+                                            &#9733;
+                                        @endfor
+                                        @for ($j = $i; $j < 5; $j++)
+                                            &#9734;
+                                        @endfor
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contentInput" class="form-label">Reseña</label>
+                            <br>
+                            <textarea name="content" id="contentInput" rows="20" style="width:100%" placeholder="Escribe tu reseña."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> --}}
+                            <button type="submit" class="btn btn-primary">Subir reseña</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
     @push('scripts')
 
     @endpush

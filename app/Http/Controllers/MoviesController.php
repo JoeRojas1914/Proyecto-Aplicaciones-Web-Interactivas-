@@ -27,6 +27,7 @@ class MoviesController extends Controller
     {
         $movie = MovieApiService::getMovieData($id_movie);
         $posts = Post::where('movie_id', $id_movie)->get();
+        // dd($movie);
         return view('movies.show', compact('movie', 'posts'));
     }
 }
