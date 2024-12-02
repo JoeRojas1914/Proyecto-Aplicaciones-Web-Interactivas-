@@ -14,7 +14,6 @@
                         @foreach ($posts as $post)
                             <div class=" mb-4">
                                 <div class="card h-100 shadow-lg">
-                                    <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}">
                                     <div class="card-body">
                                         <h2 class="card-title font-bold text-xl mb-1">{{ $post->movie_title }}</h2>
                                         <div class="d-flex align-items-center mb-4">
