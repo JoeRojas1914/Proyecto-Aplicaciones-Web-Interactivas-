@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\UserLikesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     // Route::post('/movies/{id_movie}', [MoviesController::class, 'addToWatchList'])->name('movies.addToWatchList');
     // watchlist.toggle
     Route::post('/watchlist/{id_movie}', [MoviesController::class, 'toggleWatchList'])->name('watchlist.toggle');
+    Route::post('/toggle-like-dislike', [UserLikesController::class, 'toggleLikeDislike'])->name('toggle.like.dislike');
 
     Route::get('/admin/solicitudes', [SolicitudController::class, 'index'])->name('admin.index');
     Route::patch('/admin/solicitudes/{solicitud}', [SolicitudController::class, 'update'])->name('admin.update');

@@ -77,28 +77,37 @@
         
             function handleReaction(button, type) {
                 const card = button.closest('.card');
-                const likeButton = card.querySelector('.like-btn');
-                const dislikeButton = card.querySelector('.dislike-btn');
-        
-                if (type === 'like') {
-                    if (likeButton.classList.contains('active')) {
-                        // Desactivar "like"
-                        likeButton.classList.remove('active');
-                    } else {
-                        // Activar "like" y desactivar "dislike"
-                        likeButton.classList.add('active');
-                        dislikeButton.classList.remove('active');
+                const postId = card.dataset.postId;
+                
+                // Enviar la reacción al backend
+                fetch('{{ route("toggle.like.dislike") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        post_id: postId,
+                        reaction: type
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Actualizar el estado de los botones
+                        const likeButton = card.querySelector('.like-btn');
+                        const dislikeButton = card.querySelector('.dislike-btn');
+                        
+                        if (type === 'like') {
+                            likeButton.classList.add('active');
+                            dislikeButton.classList.remove('active');
+                        } else if (type === 'dislike') {
+                            dislikeButton.classList.add('active');
+                            likeButton.classList.remove('active');
+                        }
                     }
-                } else if (type === 'dislike') {
-                    if (dislikeButton.classList.contains('active')) {
-                        // Desactivar "dislike"
-                        dislikeButton.classList.remove('active');
-                    } else {
-                        // Activar "dislike" y desactivar "like"
-                        dislikeButton.classList.add('active');
-                        likeButton.classList.remove('active');
-                    }
-                }
+                })
+                .catch(error => console.error('Error:', error));
             }
         
             // Manejo de botón "Seguir"
@@ -123,5 +132,5 @@
                 });
             });
         });
-        </script>   
+    </script>   
 </x-app-layout>

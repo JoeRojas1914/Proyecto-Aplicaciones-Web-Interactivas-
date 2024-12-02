@@ -4,16 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User_Likes_Dislikes extends Model
+class User_Likes extends Model
 {
-    protected $table = 'user_likes_dislikes';
-    public $timestamps = false;
+    protected $table = 'user_likes';
+    public $timestamps = true;
 
     protected $fillable = [
         'user_id', 
         'post_id',
-        'likes',
-        'dislike',
+        'reaction',
     ];
 
     public function user()
