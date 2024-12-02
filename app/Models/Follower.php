@@ -14,8 +14,13 @@ class User_Likes extends Model
         'followed_id',
     ];
 
-    public function user()
+    public function follower()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'follower_id');
+    }
+
+    public function followed()
+    {
+        return $this->belongsTo(User::class, 'followed_id');
     }
 }
