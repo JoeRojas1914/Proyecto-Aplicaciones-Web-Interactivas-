@@ -36,7 +36,7 @@
                                     <p style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                                         {{ $topRatedMovie['overview'] }}
                                     </p>
-                                    <button class="btn btn-secondary">Reseñas</button>
+                                    <a href="{{ route('movies.show', ['id_movie' => $topRatedMovie['id']]) }}" class="btn btn-secondary">Reseñas</a>
                                 </div>
                             </div>
                         @endforeach
@@ -58,13 +58,13 @@
                         @foreach ($nowPlayingMovies['results'] as $index => $nowPlayingMovie)
                             <div class="carousel-item item-inline {{ $index == 0 ? 'active' : '' }}">
                                 <div class="card me-3 my-2" style="min-width: 15rem">
-                                    <img src="https://image.tmdb.org/t/p/w300/{{ $nowPlayingMovie['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
+                                    <img src="https://image.tmdb.org/t/p/w1280/{{ $nowPlayingMovie['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
                                         <div>
                                             <h5 class="card-title">{{$nowPlayingMovie['title']}}</h5>
                                             <p class="card-text">{{$nowPlayingMovie['vote_average']}}</p>
                                         </div>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        <a href="{{ route('movies.show', ['id_movie' => $nowPlayingMovie['id']]) }}" class="btn btn-primary">Go somewhere</a>
                                     </div>
                                 </div>
                             </div>
@@ -87,13 +87,13 @@
                         @foreach ($upcomingMovies['results'] as $index => $upcoming)
                             <div class="carousel-item item-inline {{ $index == 0 ? 'active' : '' }}">
                                 <div class="card me-3 my-2" style="min-width: 15rem">
-                                    <img src="https://image.tmdb.org/t/p/w300/{{ $upcoming['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
+                                    <img src="https://image.tmdb.org/t/p/w1280/{{ $upcoming['backdrop_path'] }}" class="card-img-top" alt="bg-missing" />
                                     <div class="card-body d-flex flex-column justify-content-between">
                                         <div>
                                             <h5 class="card-title">{{$upcoming['title']}}</h5>
                                             <p class="card-text">{{$upcoming['vote_average']}}</p>
                                         </div>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        <a href="{{ route('movies.show', ['id_movie' => $upcoming['id']]) }}" class="btn btn-primary">Go somewhere</a>
                                     </div>
                                 </div>
                             </div>

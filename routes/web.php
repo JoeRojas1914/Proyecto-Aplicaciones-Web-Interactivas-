@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/movie/{id}', [PostController::class, 'getMovieDataFromApi'])->name('posts.data');
 
     Route::get('/movies', [MoviesController::class, 'index'])->name('movies.index');
+    Route::get('/movies/{id_movie}', [MoviesController::class, 'show'])->name('movies.show');
 });
 
 require __DIR__.'/auth.php';
